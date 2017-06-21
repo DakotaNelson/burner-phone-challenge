@@ -1,6 +1,7 @@
 import random
 import math
 import uuid
+import csv
 
 ### ASSUMPTIONS (which should change, TODO) ###
 # 1. Everyone only has one phone at a time
@@ -86,10 +87,10 @@ class Person():
 
         assert len(self.switch_times) == len(self.numbers)
 
-    def pick_contacts(self, people):
-        """ given a full list of people, pick who this person
+    def pick_contacts(self, cell_numbers):
+        """ given a full list of cell numbers, pick which numbers this person
         usually calls """
-        self.contacts = random.sample(people, self.num_contacts)
+        self.contacts = random.sample(cell_numbers, self.num_contacts)
 
     def __repr__(self):
         return "<Person contacts:{} cells:{} switch_frequency:{}" \
@@ -110,13 +111,13 @@ class CellNumber():
         self.person = person
         self.call_records = []
 
-    def generateRecords(self, people):
+    def generateRecords(self, cell_numbers):
         for hour in range(end_time):
             if random.random() < 1/self.person.cell_usage:
                 # they made a call/texted/etc. in this hour
-                self.generateRecord(hour, people)
+                self.generateRecord(hour, cell_numbers)
 
-    def generateRecord(self, time, people):
+    def generateRecord(self, time, cell_numbers):
         """ generates a call record from a random location to a random contact
         at a specified time """
 
@@ -134,25 +135,68 @@ class CellNumber():
             contact = random.choice(self.person.contacts)
         else:
             # venturing to call someone totally new
-            contact = random.choice(people)
+            contact = random.choice(cell_numbers)
 
         # assemble call record, store in self.call_records
-        self.call_records.append({'cell':location, 'contact': contact, 'time': time})
+        self.call_records.append({
+            'cell':location,
+            'from': self.uuid,
+            'to': contact.uuid,
+            'time': time
+            })
 
 
 if __name__ == "__main__":
     for x in range(num_people):
         people.append(Person())
 
+    cell_numbers = []
     for person in people:
-        person.pick_contacts(people)
-
         for cell_number in person.numbers:
-            cell_number.generateRecords(people)
+            cell_numbers.append(cell_number)
+
+    for person in people:
+        person.pick_contacts(cell_numbers)
+
+    for cell_number in cell_numbers:
+        cell_number.generateRecords(cell_numbers)
 
     # print how many call records each person has
-    print([p for p in people])
-    print([sum([len(x.call_records) for x in p.numbers]) for p in people])
+    # print([p for p in people])
+    # print([sum([len(x.call_records) for x in p.numbers]) for p in people])
+
+    all_records = []
+    for person in people:
+        for number in person.numbers:
+            all_records.extend(number.call_records)
+
+    all_records = sorted(all_records, key=lambda k: k['time'])
+
+    # print(all_records)
+
+    with open('call_records.csv', 'w') as csvfile:
+        fieldnames = ['time', 'cell', 'from', 'to']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for row in all_records:
+            writer.writerow(row)
+
+    print("[*] Call record data written to call_records.csv")
+
+    try:
+        import networkx as nx
+
+        G=nx.DiGraph()
+
+        for record in all_records:
+            G.add_edge(str(record['from']), str(record['to']), time=record['time'], cell=record['cell'])
+
+        nx.write_gexf(G, 'call_records.gexf')
+        print("[*] Call record data written to call_records.gexf")
+    except ImportError:
+        print("[!] NetworkX library not found, skipping graph export.")
+
 
     # TODO shuffle/sort by time and export records
 
