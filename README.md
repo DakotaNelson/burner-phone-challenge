@@ -1,4 +1,5 @@
-# burner-phone-challenge
+Burner Phone Challenge
+======================
 Can you identify a burner phone from a stream of (fake) AT&amp;T Hemisphere data?
 
 Inspired by Kenneth Lipp on [Twitter](https://twitter.com/kennethlipp/status/848565438061654017).
@@ -22,7 +23,6 @@ Coming soon
 
 Usage
 =====
-
 Install dependencies (using a virtualenv, preferably):
 `virtualenv venv --python=python3 && source venv/bin/activate`
 `pip install networkx`
@@ -33,11 +33,11 @@ Do the thing:
 
 Big Todos
 =========
-  -[] make locations/contacts called non-uniformly (i.e call some friends more than others, be in some places more than others)
-  -[] make agents coordinate; if someone switches numbers, their friends should stop calling the old one
+  - [] make locations/contacts called non-uniformly (i.e call some friends more than others, be in some places more than others)
+  - [] make agents coordinate; if someone switches numbers, their friends should stop calling the old one
 
 
 See Also
 ========
 
-Example of how law enforcement uses these call records: https://web.archive.org/web/20170621072311/http://wispd.org/attachments/2015Conference/pdf/Mattert_Weitz_Understanding%20and%20Plotting%20Cell%20Phone%20Information.pdf
+[Example of how law enforcement uses these call records](https://web.archive.org/web/20170621072311/http://wispd.org/attachments/2015Conference/pdf/Mattert_Weitz_Understanding%20and%20Plotting%20Cell%20Phone%20Information.pdf)
