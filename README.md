@@ -18,11 +18,13 @@ And so,
 
 The Rules
 =========
-Coming soon
+Coming soon. The gist is that you should use `call_data.csv` and `call_data.gexf` to see if you can identify which numbers belong to which people (or when people switch numbers, or however you'd like to frame the problem). You can then check against `solutions.csv`.
 
 
 Usage
 =====
+If you want to generate your own data...
+
 Install dependencies (using a virtualenv, preferably):
 `virtualenv venv --python=python3 && source venv/bin/activate`
 `pip install networkx`
@@ -30,11 +32,14 @@ Install dependencies (using a virtualenv, preferably):
 Do the thing:
 `python src/generate.py`
 
+Make sure you're using Python 3 or you'll have a bad time.
+
 
 Big Todos
 =========
-  - [] make locations/contacts called non-uniformly (i.e call some friends more than others, be in some places more than others)
-  - [] make agents coordinate; if someone switches numbers, their friends should stop calling the old one
+  - make locations/contacts called non-uniformly (i.e call some friends more than others, be in some places more than others)
+  - make agents coordinate; if someone switches numbers, their friends should stop calling the old one
+  - actual day/night cycle and generally more reasonable agent behavior
 
 
 See Also
