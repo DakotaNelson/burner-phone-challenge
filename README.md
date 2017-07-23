@@ -25,14 +25,17 @@ Usage
 =====
 If you want to generate your own data...
 
-Install dependencies (using a virtualenv, preferably):
+Install dependencies (using a virtualenv, preferably). You can skip this step, but you'll only get CSV files, no network graphs:
 `virtualenv venv --python=python3 && source venv/bin/activate`
 `pip install networkx`
 
 Do the thing:
 `python src/generate.py`
 
-Make sure you're using Python 3 or you'll have a bad time.
+If you skipped the dependencies step and aren't in a virtualenv:
+`python3 src/generate.py`
+
+(Make sure you're using Python 3 or you'll have a bad time.)
 
 
 Big Todos
@@ -40,6 +43,8 @@ Big Todos
   - make locations/contacts called non-uniformly (i.e call some friends more than others, be in some places more than others)
   - make agents coordinate; if someone switches numbers, their friends should stop calling the old one
   - actual day/night cycle and generally more reasonable agent behavior
+  - "friends of friends" - right now, agents are uniformly likely to know each other, which doesn't make sense
+  - "mutual contacts" - if A calls B a lot, right now B is no more likely to call A, which is obviously wrong
 
 
 See Also
